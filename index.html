@@ -14,9 +14,7 @@
       --no:#ef4444;
       --shadow: 0 20px 60px rgba(0,0,0,.18);
     }
-
     *{ box-sizing:border-box; }
-
     body{
       margin:0;
       min-height:100vh;
@@ -29,7 +27,6 @@
       overflow:hidden;
       color:var(--text);
     }
-
     .card{
       width:min(560px, 92vw);
       padding:26px 20px;
@@ -42,25 +39,21 @@
       position:relative;
       animation: pop .35s ease;
     }
-
     @keyframes pop{
       from { transform: translateY(10px); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
     }
-
     h1{
       margin:0 0 8px;
       font-size: clamp(24px, 4vw, 34px);
       letter-spacing:-.02em;
     }
-
     p{
       margin:0 0 16px;
       opacity:.9;
       font-size: clamp(15px, 2.2vw, 17px);
       line-height:1.35;
     }
-
     .buttons{
       margin-top:16px;
       display:flex;
@@ -68,7 +61,6 @@
       gap:12px;
       flex-wrap:wrap;
     }
-
     button{
       border:0;
       border-radius:999px;
@@ -82,11 +74,10 @@
       min-width:160px;
     }
     button:active{ transform: scale(.98); }
+    button:hover{ filter: brightness(1.05); }
     .yes{ background: linear-gradient(180deg, #34d399, #16a34a); color:white; }
     .no { background: linear-gradient(180deg, #fb7185, #ef4444); color:white; }
-
     .hidden{ display:none; }
-
     .imgWrap{
       margin: 14px auto 14px;
       width: min(360px, 100%);
@@ -98,14 +89,12 @@
       box-shadow: 0 14px 40px rgba(0,0,0,.20);
       border: 1px solid rgba(0,0,0,.06);
     }
-
     .tiny{
       font-size: 12px;
       opacity: .65;
       margin-top: 10px;
       line-height: 1.25;
     }
-
     /* floating hearts */
     .heart{
       position:fixed;
@@ -122,15 +111,17 @@
       10%{ opacity:.95; }
       100%{ transform: translateY(-120vh) translateX(var(--drift)) rotate(240deg); opacity:0; }
     }
+    /* Success screen */
+    #screenYes h1{
+      font-size: clamp(28px, 5vw, 42px);
+    }
   </style>
 </head>
 <body>
-
   <!-- SCREEN 1: QUESTION -->
   <div class="card" id="screenQuestion">
     <h1>💘 Will you be my Valentine? 💘</h1>
     <p>I have one important question for you…</p>
-
     <div class="buttons">
       <button class="yes" id="btnYes1">Yes 💚</button>
       <button class="no"  id="btnNo">No 🙃</button>
@@ -140,18 +131,71 @@
   <!-- SCREEN 2: SHE CLICKED NO -->
   <div class="card hidden" id="screenNo">
     <h1>Okay… but look at us 😭💞</h1>
-
     <div class="imgWrap">
-      <img src="IMG_5875.heic" alt="Photo" />
+      <img src="IMG_7135.png" alt="Photo of us" />
     </div>
-
     <p><b>write me right now</b> 😌</p>
-
     <div class="buttons">
       <button class="yes" id="btnYes2">Fine… Yes 💚</button>
     </div>
-
     <p class="tiny">
-      If this photo doesn’t show up on your phone, open the link in Safari.
-      (HEIC
+      You know you want to say yes 💕
+    </p>
+  </div>
 
+  <!-- SCREEN 3: SUCCESS! -->
+  <div class="card hidden" id="screenYes">
+    <h1>🎉 YAY! 🎉</h1>
+    <div class="imgWrap">
+      <img src="IMG_3909.jpeg" alt="Us together" />
+    </div>
+    <p style="font-size:clamp(18px, 3vw, 22px); margin:20px 0;">
+      I love you Savannah! 💕<br>
+      I can't wait to celebrate Valentine's with you!! 🥰
+    </p>
+    <div style="font-size:80px; margin:20px 0;">💘</div>
+  </div>
+
+  <script>
+    const screenQuestion = document.getElementById('screenQuestion');
+    const screenNo = document.getElementById('screenNo');
+    const screenYes = document.getElementById('screenYes');
+    const btnYes1 = document.getElementById('btnYes1');
+    const btnYes2 = document.getElementById('btnYes2');
+    const btnNo = document.getElementById('btnNo');
+
+    // Floating hearts animation
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '💕';
+      heart.style.setProperty('--x', Math.random() * 100 + 'vw');
+      heart.style.setProperty('--size', (Math.random() * 30 + 20) + 'px');
+      heart.style.setProperty('--dur', (Math.random() * 3 + 4) + 's');
+      heart.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+
+    function showSuccess() {
+      screenQuestion.classList.add('hidden');
+      screenNo.classList.add('hidden');
+      screenYes.classList.remove('hidden');
+      
+      // Shower of hearts!
+      for(let i = 0; i < 15; i++) {
+        setTimeout(() => createHeart(), i * 200);
+      }
+    }
+
+    // Button handlers
+    btnYes1.addEventListener('click', showSuccess);
+    btnYes2.addEventListener('click', showSuccess);
+    
+    btnNo.addEventListener('click', () => {
+      screenQuestion.classList.add('hidden');
+      screenNo.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
