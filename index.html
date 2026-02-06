@@ -1,183 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Will You Be My Valentine? 💘</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valentine 💘</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      overflow: hidden;
+    :root{
+      --bg1:#ffdde1;
+      --bg2:#ee9ca7;
+      --card:#ffffffcc;
+      --text:#1f1f1f;
+      --yes:#22c55e;
+      --no:#ef4444;
+      --shadow: 0 20px 60px rgba(0,0,0,.18);
     }
 
-    .card {
-      background: white;
-      padding: 32px;
-      border-radius: 20px;
-      width: min(420px, 90vw);
-      text-align: center;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.2);
-      animation: fadeIn 0.6s ease;
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 20% 20%, var(--bg1), transparent 55%),
+                  radial-gradient(1200px 800px at 80% 80%, var(--bg2), transparent 55%),
+                  linear-gradient(135deg, #ffe6f0, #ffd6e7);
+      overflow:hidden;
+      color:var(--text);
     }
 
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
+    .card{
+      width:min(560px, 92vw);
+      padding:26px 20px;
+      background:var(--card);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      text-align:center;
+      position:relative;
+      animation: pop .35s ease;
     }
 
-    p {
-      font-size: 16px;
-      color: #444;
+    @keyframes pop{
+      from { transform: translateY(10px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
     }
 
-    .buttons {
-      margin-top: 28px;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
+    h1{
+      margin:0 0 8px;
+      font-size: clamp(24px, 4vw, 34px);
+      letter-spacing:-.02em;
     }
 
-    button {
-      border: none;
-      padding: 12px 22px;
-      font-size: 16px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: transform 0.1s ease;
+    p{
+      margin:0 0 16px;
+      opacity:.9;
+      font-size: clamp(15px, 2.2vw, 17px);
+      line-height:1.35;
     }
 
-    button:active {
-      transform: scale(0.96);
+    .buttons{
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .yes {
-      background: #22c55e;
-      color: white;
+    button{
+      border:0;
+      border-radius:999px;
+      padding:12px 18px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,.12);
+      transition: transform .12s ease, filter .2s ease;
+      user-select:none;
+      min-width:160px;
+    }
+    button:active{ transform: scale(.98); }
+    .yes{ background: linear-gradient(180deg, #34d399, #16a34a); color:white; }
+    .no { background: linear-gradient(180deg, #fb7185, #ef4444); color:white; }
+
+    .hidden{ display:none; }
+
+    .imgWrap{
+      margin: 14px auto 14px;
+      width: min(360px, 100%);
+    }
+    img{
+      width:100%;
+      height:auto;
+      border-radius:18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.20);
+      border: 1px solid rgba(0,0,0,.06);
     }
 
-    .no {
-      background: #ef4444;
-      color: white;
+    .tiny{
+      font-size: 12px;
+      opacity: .65;
+      margin-top: 10px;
+      line-height: 1.25;
     }
 
-    .hidden {
-      display: none;
+    /* floating hearts */
+    .heart{
+      position:fixed;
+      left: var(--x);
+      bottom:-40px;
+      font-size: var(--size);
+      opacity: .9;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.12));
+      animation: floatUp var(--dur) linear forwards;
+      pointer-events:none;
     }
-
-    /* Success page */
-    .success h1 {
-      font-size: 32px;
-    }
-
-    .hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .heart {
-      position: absolute;
-      bottom: -20px;
-      font-size: 20px;
-      animation: floatUp 4s linear forwards;
-      opacity: 0.9;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-110vh);
-        opacity: 0;
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes floatUp{
+      0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+      10%{ opacity:.95; }
+      100%{ transform: translateY(-120vh) translateX(var(--drift)) rotate(240deg); opacity:0; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- INVITE -->
-  <div class="card" id="invite">
+  <!-- SCREEN 1: QUESTION -->
+  <div class="card" id="screenQuestion">
     <h1>💘 Will you be my Valentine? 💘</h1>
-    <p>
-      I was wondering if you’d want to spend Valentine’s Day with me ❤️
-    </p>
+    <p>I have one important question for you…</p>
 
     <div class="buttons">
-      <button class="yes" id="yesBtn">Yes 💚</button>
-      <button class="no" id="noBtn">No 🙃</button>
+      <button class="yes" id="btnYes1">Yes 💚</button>
+      <button class="no"  id="btnNo">No 🙃</button>
     </div>
   </div>
 
-  <!-- SUCCESS -->
-  <div class="card success hidden" id="success">
-    <h1>Since you clicked yes 😊</h1>
-    <p>
-      Congratulations, you’re officially my Valentine 💖  
-      <br><br>
-      I can’t wait to spend the day with you.
-    </p>
+  <!-- SCREEN 2: SHE CLICKED NO -->
+  <div class="card hidden" id="screenNo">
+    <h1>Okay… but look at us 😭💞</h1>
 
-    <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
-      (This page will never forget your answer 😉)
-    </p>
-  </div>
+    <div class="imgWrap">
+      <img src="IMG_5875.heic" alt="Photo" />
+    </div>
 
-  <div class="hearts" id="hearts"></div>
+    <p><b>write me right now</b> 😌</p>
 
-  <script>
-    const invite = document.getElementById("invite");
-    const success = document.getElementById("success");
-    const hearts = document.getElementById("hearts");
+    <div class="buttons">
+      <button class="yes" id="btnYes2">Fine… Yes 💚</button>
+    </div>
 
-    function showSuccess() {
-      invite.classList.add("hidden");
-      success.classList.remove("hidden");
-      localStorage.setItem("valentineYes", "true");
-      startHearts();
-    }
+    <p class="tiny">
+      If this photo doesn’t show up on your phone, open the link in Safari.
+      (HEIC
 
-    // Yes button
-    document.getElementById("yesBtn").addEventListener("click", showSuccess);
-
-    // No button → redirect to Yes page anyway 😄
-    document.getElementById("noBtn").addEventListener("click", showSuccess);
-
-    // Remember her answer
-    if (localStorage.getItem("valentineYes") === "true") {
-      showSuccess();
-    }
-
-    function startHearts() {
-      setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = ["💖","💘","💝","💞","❤️"][Math.floor(Math.random()*5)];
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (14 + Math.random()*20) + "px";
-        hearts.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-      }, 300);
-    }
-  </script>
-
-</body>
-</html>
