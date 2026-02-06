@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be My Valentine? 💘</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 32px;
+      border-radius: 20px;
+      width: min(420px, 90vw);
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #444;
+    }
+
+    .buttons {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 22px;
+      font-size: 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.1s ease;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .yes {
+      background: #22c55e;
+      color: white;
+    }
+
+    .no {
+      background: #ef4444;
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Success page */
+    .success h1 {
+      font-size: 32px;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 4s linear forwards;
+      opacity: 0.9;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- INVITE -->
+  <div class="card" id="invite">
+    <h1>💘 Will you be my Valentine? 💘</h1>
+    <p>
+      I was wondering if you’d want to spend Valentine’s Day with me ❤️
+    </p>
+
+    <div class="buttons">
+      <button class="yes" id="yesBtn">Yes 💚</button>
+      <button class="no" id="noBtn">No 🙃</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="card success hidden" id="success">
+    <h1>Since you clicked yes 😊</h1>
+    <p>
+      Congratulations, you’re officially my Valentine 💖  
+      <br><br>
+      I can’t wait to spend the day with you.
+    </p>
+
+    <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
+      (This page will never forget your answer 😉)
+    </p>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <script>
+    const invite = document.getElementById("invite");
+    const success = document.getElementById("success");
+    const hearts = document.getElementById("hearts");
+
+    function showSuccess() {
+      invite.classList.add("hidden");
+      success.classList.remove("hidden");
+      localStorage.setItem("valentineYes", "true");
+      startHearts();
+    }
+
+    // Yes button
+    document.getElementById("yesBtn").addEventListener("click", showSuccess);
+
+    // No button → redirect to Yes page anyway 😄
+    document.getElementById("noBtn").addEventListener("click", showSuccess);
+
+    // Remember her answer
+    if (localStorage.getItem("valentineYes") === "true") {
+      showSuccess();
+    }
+
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = ["💖","💘","💝","💞","❤️"][Math.floor(Math.random()*5)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (14 + Math.random()*20) + "px";
+        hearts.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>
